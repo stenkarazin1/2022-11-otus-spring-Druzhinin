@@ -1,0 +1,4 @@
+application:
+  config-file: "/test3.csv"
+  num-items: 5
+  locale: "en_US"
