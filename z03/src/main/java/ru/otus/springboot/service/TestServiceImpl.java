@@ -6,7 +6,6 @@ import ru.otus.springboot.domain.TestItem;
 import ru.otus.springboot.logic.TestBox;
 
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -35,6 +34,7 @@ public class TestServiceImpl implements TestService {
 
         userService.printUserName( userName );
         answersService.printResults( answeredTestItemList );
+        answersService.printResultsWidely( answeredTestItemList );
     }
 
 }

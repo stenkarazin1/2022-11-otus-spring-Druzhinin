@@ -8,13 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SpringbootApplication {
 
-	public static void main(String[] args) {
-        TestService testService = SpringApplication.run(SpringbootApplication.class, args).getBean( TestService.class );
-		//AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext( Main.class );
-		//TestService testService = context.getBean( TestService.class );
+	public static void main( String[] args ) {
+        TestService testService = SpringApplication.run( SpringbootApplication.class, args ).getBean( TestService.class );
 		testService.start();
-
-		//context.close();
 	}
 
 }

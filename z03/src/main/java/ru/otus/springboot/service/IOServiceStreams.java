@@ -24,7 +24,7 @@ public class IOServiceStreams implements IOService {
 
     @Override
     public int readInt(){
-        return Integer.parseInt(input.nextLine());
+        return Integer.parseInt( input.nextLine());
     }
 
     @Override

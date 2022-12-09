@@ -9,5 +9,6 @@ public interface AnswersService {
 
     List< AnsweredTestItem > inputAnswers( List< TestItem > testItemList );
     void printResults( List< AnsweredTestItem > answeredTestItemList );
+    void printResultsWidely( List< AnsweredTestItem > answeredTestItemList );
 
 }
