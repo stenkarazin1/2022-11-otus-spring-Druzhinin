@@ -1,6 +1,12 @@
-{ "en_US" : "In what year was Pushkin born?"; "ru_RU" : "В каком году родился Пушкин?" },,1799,1805,1810,1812
-{ "en_US" : "In what year was Lenin born?"; "ru_RU" : "В каком году родился Ленин?" },1860,1865,,1870,1875
-{ "en_US" : "In what year did the First World War begin?"; "ru_RU" : "В каком году началась Первая мировая война?" },1913,,1914
-{ "en_US" : "In what year did the Second World War begin?"; "ru_RU" : "В каком году началась Вторая мировая война?" },,1939,1941
-{ "en_US" : "In what year did the Olympic Games take place in Moscow?"; "ru_RU" : "В каком году в Москве проходили Олимпийские игры?" },1976,1978,,1980
-{ "en_US" : "What year was the FIFA World Cup held in Moscow?"; "ru_RU" : "В каком году в Москве проходил чемпионат мира по футболу?" },2016,,2018
+en,In what year was Pushkin born?,,1799,1805,1810,1812
+en,In what year was Lenin born?,1860,1865,,1870,1875
+en,In what year did the First World War begin?,1913,,1914
+en,In what year did the Second World War begin?,,1939,1941
+en,In what year did the Olympic Games take place in Moscow?,1976,1978,,1980
+en,What year was the FIFA World Cup held in Russia?,2016,,2018
+ru,В каком году родился Пушкин?,,1799,1805,1810,1812
+ru,В каком году родился Ленин?,1860,1865,,1870,1875
+ru,В каком году началась Первая мировая война?,1913,,1914
+ru,В каком году началась Вторая мировая война?,,1939,1941
+ru,В каком году в Москве проходили Олимпийские игры?,1976,1978,,1980
+ru,В каком году в России проходил чемпионат мира по футболу?,2016,,2018
