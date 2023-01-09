@@ -5,7 +5,6 @@ import ru.otus.springboot.domain.TestItem;
 import ru.otus.springboot.domain.Variant;
 
 import org.springframework.stereotype.Component;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,8 +18,8 @@ public class TestBoxDaoSimple implements TestBoxDao {
     private final String locale;
 
     public TestBoxDaoSimple( PropertyConfig propertyConfig ) {
-        fileName = propertyConfig.getFileName();
-        locale = propertyConfig.getLocale();
+        fileName = propertyConfig.getProperty( "config-file" );
+        locale = propertyConfig.getProperty( "locale" );
     }
 
     public List< TestItem > getTestItemList() throws IOException {

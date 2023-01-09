@@ -1,17 +1,12 @@
 package ru.otus.springboot.config;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.PropertySource;
+// Возможно, имеет смысл объединить класс PropertyConfig с классом ApplicationProperties, т.к. возникает лишний слой
 import org.springframework.stereotype.Component;
 
-//@ConfigurationProperties("application")
 @Component
-//@PropertySource("classpath:application.properties")
 public class PropertyConfigImpl implements PropertyConfig {
     private final ApplicationProperties ap;
     private String fileName;
-    private Integer requiredTestItemListSize;
+    private String requiredTestItemListSize;
     private String locale;
 
     public PropertyConfigImpl( ApplicationProperties ap ) {
@@ -21,16 +16,27 @@ public class PropertyConfigImpl implements PropertyConfig {
         this.locale = ap.getLocale();
     }
 
-    public String getFileName() {
+    private String getFileName() {
         return fileName;
     }
 
-    public Integer getRequiredTestItemListSize() {
+    private String getRequiredTestItemListSize() {
         return requiredTestItemListSize;
     }
 
-    public String getLocale() {
+    private String getLocale() {
         return locale;
+    }
+
+    public String getProperty( String property ) {
+        // Пользователю класса PropertyConfig предоставляется данный унифицированный метод для обращения к файлу свойств application.yml
+        // Достоинство выбранного подхода состоит в том, что пользователь класса PropertyConfig обращается к свойству по имени, передавая это имя данному унифицированному методу
+        // С другой стороны, на пользователя класса PropertyConfig перекладывается задача интерпретации свойства, т.е. приведения полученного значения к нужному типу данных
+        if( property.equals( "config-file" ) ) return getFileName();
+        if( property.equals( "num-items" ) ) return getRequiredTestItemListSize();
+        if( property.equals( "locale" ) ) return getLocale();
+        //throw new IllegalArgumentException( "" );
+        return null;
     }
 
 }

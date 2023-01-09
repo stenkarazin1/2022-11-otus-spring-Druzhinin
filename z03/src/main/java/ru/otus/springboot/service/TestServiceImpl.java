@@ -20,7 +20,7 @@ public class TestServiceImpl implements TestService {
         this.testBox = testBox;
         this.userService = userService;
         this.answersService = answersService;
-        this.requiredTestItemListSize = propertyConfig.getRequiredTestItemListSize();
+        this.requiredTestItemListSize = Integer.valueOf( propertyConfig.getProperty( "num-items" ) );
     }
 
     public void start() {
