@@ -1,6 +1,7 @@
 package ru.otus.springboot.service;
 
 import ru.otus.springboot.config.PropertyConfig;
+import ru.otus.springboot.exceptions.NoCinemaException;
 import ru.otus.springboot.domain.AnsweredTestItem;
 import ru.otus.springboot.domain.TestItem;
 import ru.otus.springboot.logic.TestBox;
@@ -23,13 +24,15 @@ public class TestServiceImpl implements TestService {
     }
 
     public void start() {
-        String userName = userService.inputUserName();
-
-        List< TestItem > testItemList = testBox.getTestItemList( requiredTestItemListSize );
-        if( testItemList.size() != requiredTestItemListSize ) {
-            // Какие-то действия
-            // Можно также реализовать с помощью исключений
+        List< TestItem > testItemList;
+        try {
+            testItemList = testBox.getTestItemList( requiredTestItemListSize );
         }
+        catch ( NoCinemaException e ) {
+            return;
+        }
+
+        String userName = userService.inputUserName();
         List< AnsweredTestItem > answeredTestItemList = answersService.inputAnswers( testItemList );
 
         userService.printUserName( userName );
