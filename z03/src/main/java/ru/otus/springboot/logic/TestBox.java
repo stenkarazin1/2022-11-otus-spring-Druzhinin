@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface TestBox {
 
-    List< TestItem > getTestItemList( Integer requiredTestItemListSize )  throws NoCinemaException;
+    List< TestItem > getTestItemList()  throws NoCinemaException;
 
 }

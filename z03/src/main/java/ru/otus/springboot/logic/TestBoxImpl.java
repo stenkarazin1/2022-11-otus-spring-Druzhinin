@@ -1,5 +1,6 @@
 package ru.otus.springboot.logic;
 
+import ru.otus.springboot.config.PropertyConfig;
 import ru.otus.springboot.exceptions.NoCinemaException;
 import ru.otus.springboot.dao.TestBoxDao;
 import ru.otus.springboot.domain.TestItem;
@@ -13,14 +14,15 @@ import java.util.List;
 public class TestBoxImpl implements TestBox {
     // Класс TestBox реализует промежуточный слой - слой бизнес-логики
     // Его задача заключается в формировании списка вопросов заданного объема, комбинируя и перемешивая вопросы из разных источников
-
+    private final Integer requiredTestItemListSize;
     private final TestBoxDao testBoxDao;
 
-    public TestBoxImpl( TestBoxDao dao ) {
+    public TestBoxImpl( PropertyConfig propertyConfig, TestBoxDao dao ) {
+        this.requiredTestItemListSize = Integer.valueOf( propertyConfig.getProperty( "num-items" ) );
         this.testBoxDao = dao;
     }
 
-    public List< TestItem > getTestItemList( Integer requiredTestItemListSize ) throws NoCinemaException {
+    public List< TestItem > getTestItemList() throws NoCinemaException {
         final List< TestItem > testItemList;
         try {
             testItemList = testBoxDao.getTestItemList();

@@ -14,19 +14,17 @@ public class TestServiceImpl implements TestService {
     private final TestBox testBox;
     private final UserService userService;
     private final AnswersService answersService;
-    private final Integer requiredTestItemListSize;
 
-    public TestServiceImpl( PropertyConfig propertyConfig, TestBox testBox, UserService userService, AnswersService answersService ) {
+    public TestServiceImpl( TestBox testBox, UserService userService, AnswersService answersService ) {
         this.testBox = testBox;
         this.userService = userService;
         this.answersService = answersService;
-        this.requiredTestItemListSize = Integer.valueOf( propertyConfig.getProperty( "num-items" ) );
     }
 
     public void start() {
         List< TestItem > testItemList;
         try {
-            testItemList = testBox.getTestItemList( requiredTestItemListSize );
+            testItemList = testBox.getTestItemList();
         }
         catch ( NoCinemaException e ) {
             return;
