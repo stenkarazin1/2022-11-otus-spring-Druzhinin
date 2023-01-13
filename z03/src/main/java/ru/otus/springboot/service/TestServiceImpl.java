@@ -1,6 +1,5 @@
 package ru.otus.springboot.service;
 
-import ru.otus.springboot.config.PropertyConfig;
 import ru.otus.springboot.exceptions.NoCinemaException;
 import ru.otus.springboot.domain.AnsweredTestItem;
 import ru.otus.springboot.domain.TestItem;
@@ -12,11 +11,13 @@ import java.util.List;
 @Service
 public class TestServiceImpl implements TestService {
     private final TestBox testBox;
+    private final NoCinema noCinema;
     private final UserService userService;
     private final AnswersService answersService;
 
-    public TestServiceImpl( TestBox testBox, UserService userService, AnswersService answersService ) {
+    public TestServiceImpl( TestBox testBox, NoCinema noCinema, UserService userService, AnswersService answersService ) {
         this.testBox = testBox;
+        this.noCinema = noCinema;
         this.userService = userService;
         this.answersService = answersService;
     }
@@ -27,6 +28,7 @@ public class TestServiceImpl implements TestService {
             testItemList = testBox.getTestItemList();
         }
         catch ( NoCinemaException e ) {
+            noCinema.printNoCinema();
             return;
         }
 
