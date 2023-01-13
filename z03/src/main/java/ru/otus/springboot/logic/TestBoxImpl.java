@@ -14,15 +14,24 @@ import java.util.List;
 public class TestBoxImpl implements TestBox {
     // Класс TestBox реализует промежуточный слой - слой бизнес-логики
     // Его задача заключается в формировании списка вопросов заданного объема, комбинируя и перемешивая вопросы из разных источников
-    private final Integer requiredTestItemListSize;
+    private Integer requiredTestItemListSize;
     private final TestBoxDao testBoxDao;
 
     public TestBoxImpl( PropertyConfig propertyConfig, TestBoxDao dao ) {
-        this.requiredTestItemListSize = Integer.valueOf( propertyConfig.getProperty( "num-items" ) );
+        try {
+            this.requiredTestItemListSize = Integer.valueOf( propertyConfig.getProperty( "num-items" ) );
+        }
+        catch( IllegalArgumentException e ) {
+            this.requiredTestItemListSize = null;
+        }
         this.testBoxDao = dao;
     }
 
     public List< TestItem > getTestItemList() throws NoCinemaException {
+        if( requiredTestItemListSize == null ) {
+            throw new NoCinemaException( "Illegal argument" );
+        }
+
         final List< TestItem > testItemList;
         try {
             testItemList = testBoxDao.getTestItemList();
@@ -31,7 +40,7 @@ public class TestBoxImpl implements TestBox {
             throw new NoCinemaException( "Incorrect file input" );
         }
         catch ( NullPointerException e ) {
-            throw new NoCinemaException("File with questions is absent");
+            throw new NoCinemaException( "File with questions not found" );
         }
 
         final int testItemListSize = testItemList.size();

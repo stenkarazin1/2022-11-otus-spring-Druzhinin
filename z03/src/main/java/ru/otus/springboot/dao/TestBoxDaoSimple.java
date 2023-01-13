@@ -14,15 +14,29 @@ import java.util.List;
 
 @Component
 public class TestBoxDaoSimple implements TestBoxDao {
-    private final String fileName;
-    private final String locale;
+    private String fileName;
+    private String locale;
 
     public TestBoxDaoSimple( PropertyConfig propertyConfig ) {
-        fileName = propertyConfig.getProperty( "config-file" );
-        locale = propertyConfig.getProperty( "locale" );
+        try {
+            this.fileName = propertyConfig.getProperty( "config-file" );
+        }
+        catch( IllegalArgumentException e ) {
+            this.fileName = null;
+        }
+        try {
+            this.locale = propertyConfig.getProperty( "locale" );
+        }
+        catch( IllegalArgumentException e ) {
+            this.locale = null;
+        }
     }
 
     public List< TestItem > getTestItemList() throws IOException {
+        // Если fileName и/или locale имеют значение null, безусловно, нужно бросать исключения
+        // Несмотря на то, что в конечном счете равенство null этих переменных тоже приведет к выбросу исключений и их последующей обработке
+        // Я не бросаю исключения, чтобы не загромождать код
+
         List< TestItem > testItemList = new ArrayList<>();
 
         InputStream inputStream = null;
