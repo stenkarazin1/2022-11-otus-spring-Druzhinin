@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 public class ApplicationProperties {
     private String configFile;
     private String numItems;
-    private String locale;
+    private String localeName;
 
-    public void setConfigFile(String configFile) {
+    public void setConfigFile( String configFile ) {
         this.configFile = configFile;
     }
 
@@ -18,7 +18,7 @@ public class ApplicationProperties {
         return configFile;
     }
 
-    public void setNumItems(String numItems) {
+    public void setNumItems( String numItems ) {
         this.numItems = numItems;
     }
 
@@ -26,11 +26,12 @@ public class ApplicationProperties {
         return numItems;
     }
 
-    public void setLocale(String locale) {
-        this.locale = locale;
+    public void setLocaleName( String localeName ) {
+        this.localeName = localeName;
     }
 
-    public String getLocale() {
-        return locale;
+    public String getLocaleName() {
+        return localeName;
     }
+
 }

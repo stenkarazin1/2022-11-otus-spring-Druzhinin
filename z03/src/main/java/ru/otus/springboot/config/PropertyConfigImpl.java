@@ -7,13 +7,13 @@ public class PropertyConfigImpl implements PropertyConfig {
     private final ApplicationProperties ap;
     private String fileName;
     private String requiredTestItemListSize;
-    private String locale;
+    private String localeName;
 
     public PropertyConfigImpl( ApplicationProperties ap ) {
         this.ap = ap;
         this.fileName = ap.getConfigFile();
         this.requiredTestItemListSize = ap.getNumItems();
-        this.locale = ap.getLocale();
+        this.localeName = ap.getLocaleName();
     }
 
     private String getFileName() {
@@ -24,8 +24,8 @@ public class PropertyConfigImpl implements PropertyConfig {
         return requiredTestItemListSize;
     }
 
-    private String getLocale() {
-        return locale;
+    private String getLocaleName() {
+        return localeName;
     }
 
     public String getProperty( String property ) throws IllegalArgumentException {
@@ -40,8 +40,8 @@ public class PropertyConfigImpl implements PropertyConfig {
                 return getRequiredTestItemListSize();
             }
             else
-                if( property.equals( "locale" ) ) {
-                    return getLocale();
+                if( property.equals( "locale-name" ) ) {
+                    return getLocaleName();
                 }
                 else {
                     throw new IllegalArgumentException();

@@ -1,6 +1,7 @@
 package ru.otus.springboot.dao;
 
 import ru.otus.springboot.config.PropertyConfig;
+import ru.otus.springboot.config.LocaleHolder;
 import ru.otus.springboot.domain.TestItem;
 import ru.otus.springboot.domain.Variant;
 
@@ -14,21 +15,24 @@ import java.util.List;
 
 @Component
 public class TestBoxDaoSimple implements TestBoxDao {
+    private final LocaleHolder localeHolder;
+    private String localeName;
     private String fileName;
-    private String locale;
 
-    public TestBoxDaoSimple( PropertyConfig propertyConfig ) {
+    public TestBoxDaoSimple( PropertyConfig propertyConfig, LocaleHolder localeHolder ) {
+
+        this.localeHolder = localeHolder;
+        try {
+            this.localeName = localeHolder.getLocaleName();
+        }
+        catch( IllegalArgumentException e ) {
+            this.localeName = null;
+        }
         try {
             this.fileName = propertyConfig.getProperty( "config-file" );
         }
         catch( IllegalArgumentException e ) {
             this.fileName = null;
-        }
-        try {
-            this.locale = propertyConfig.getProperty( "locale" );
-        }
-        catch( IllegalArgumentException e ) {
-            this.locale = null;
         }
     }
 
@@ -60,7 +64,7 @@ public class TestBoxDaoSimple implements TestBoxDao {
                     // Bad format
                     continue;
                 }
-                if( !locale.equals( str[0] ) ) {
+                if( !localeName.equals( str[0] ) ) {
                     // Another language
                     continue;
                 }
