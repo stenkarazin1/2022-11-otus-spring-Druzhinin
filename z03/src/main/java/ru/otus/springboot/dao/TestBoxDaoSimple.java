@@ -6,6 +6,7 @@ import ru.otus.springboot.domain.TestItem;
 import ru.otus.springboot.domain.Variant;
 
 import org.springframework.stereotype.Component;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,36 +16,22 @@ import java.util.List;
 
 @Component
 public class TestBoxDaoSimple implements TestBoxDao {
+    private final PropertyConfig propertyConfig;
     private final LocaleHolder localeHolder;
-    private String localeName;
-    private String fileName;
 
     public TestBoxDaoSimple( PropertyConfig propertyConfig, LocaleHolder localeHolder ) {
-
+        this.propertyConfig = propertyConfig;
         this.localeHolder = localeHolder;
-        try {
-            this.localeName = localeHolder.getLocaleName();
-        }
-        catch( IllegalArgumentException e ) {
-            this.localeName = null;
-        }
-        try {
-            this.fileName = propertyConfig.getProperty( "config-file" );
-        }
-        catch( IllegalArgumentException e ) {
-            this.fileName = null;
-        }
     }
 
-    public List< TestItem > getTestItemList() throws IOException {
-        // Если fileName и/или locale имеют значение null, безусловно, нужно бросать исключения
-        // Несмотря на то, что в конечном счете равенство null этих переменных тоже приведет к выбросу исключений и их последующей обработке
-        // Я не бросаю исключения, чтобы не загромождать код
+    public List< TestItem > getTestItemList() throws IOException, NullPointerException, IllegalArgumentException {
+        String fileName = propertyConfig.getProperty("config-file");
+        String localeName = localeHolder.getLocaleName();
 
         List< TestItem > testItemList = new ArrayList<>();
 
         InputStream inputStream = null;
-        inputStream = getClass().getResourceAsStream( fileName );
+        inputStream = getClass().getResourceAsStream(fileName);
 
         try ( BufferedReader reader = new BufferedReader( new InputStreamReader( inputStream ) ) ) {
             String line;

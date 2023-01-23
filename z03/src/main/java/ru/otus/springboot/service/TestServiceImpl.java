@@ -6,6 +6,7 @@ import ru.otus.springboot.domain.TestItem;
 import ru.otus.springboot.logic.TestBox;
 
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -26,18 +27,18 @@ public class TestServiceImpl implements TestService {
         List< TestItem > testItemList;
         try {
             testItemList = testBox.getTestItemList();
+
+            String userName = userService.inputUserName();
+            List< AnsweredTestItem > answeredTestItemList = answersService.inputAnswers( testItemList );
+
+            userService.printUserName( userName );
+            answersService.printResults( answeredTestItemList );
+            answersService.printResultsWidely( answeredTestItemList );
         }
         catch ( NoCinemaException e ) {
             noCinema.printNoCinema();
             return;
         }
-
-        String userName = userService.inputUserName();
-        List< AnsweredTestItem > answeredTestItemList = answersService.inputAnswers( testItemList );
-
-        userService.printUserName( userName );
-        answersService.printResults( answeredTestItemList );
-        answersService.printResultsWidely( answeredTestItemList );
     }
 
 }

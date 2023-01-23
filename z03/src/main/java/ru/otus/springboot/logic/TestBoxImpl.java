@@ -6,6 +6,7 @@ import ru.otus.springboot.dao.TestBoxDao;
 import ru.otus.springboot.domain.TestItem;
 
 import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -14,22 +15,21 @@ import java.util.List;
 public class TestBoxImpl implements TestBox {
     // Класс TestBox реализует промежуточный слой - слой бизнес-логики
     // Его задача заключается в формировании списка вопросов заданного объема, комбинируя и перемешивая вопросы из разных источников
-    private Integer requiredTestItemListSize;
+    private final PropertyConfig propertyConfig;
     private final TestBoxDao testBoxDao;
 
     public TestBoxImpl( PropertyConfig propertyConfig, TestBoxDao dao ) {
-        try {
-            this.requiredTestItemListSize = Integer.valueOf( propertyConfig.getProperty( "num-items" ) );
-        }
-        catch( IllegalArgumentException e ) {
-            this.requiredTestItemListSize = null;
-        }
+        this.propertyConfig = propertyConfig;
         this.testBoxDao = dao;
     }
 
     public List< TestItem > getTestItemList() throws NoCinemaException {
-        if( requiredTestItemListSize == null ) {
-            throw new NoCinemaException( "Illegal argument" );
+        Integer requiredTestItemListSize;
+        try {
+            requiredTestItemListSize = Integer.valueOf( propertyConfig.getProperty( "num-items" ) );
+        }
+        catch( IllegalArgumentException e ) {
+            throw new NoCinemaException( "No such property" );
         }
 
         final List< TestItem > testItemList;
@@ -41,6 +41,9 @@ public class TestBoxImpl implements TestBox {
         }
         catch ( NullPointerException e ) {
             throw new NoCinemaException( "File with questions not found" );
+        }
+        catch( IllegalArgumentException e ) {
+            throw new NoCinemaException( "No such property" );
         }
 
         final int testItemListSize = testItemList.size();

@@ -14,7 +14,7 @@ public class NoCinema {
 
     public void printNoCinema() {
         ioService.outputString( "\n" );
-        ioService.outputString( messages.getMessage( "no-cinema-today" ) );
+        ioService.outputString( messages.getEmergencyMessage( "no-cinema-today" ) );
     }
 
 }

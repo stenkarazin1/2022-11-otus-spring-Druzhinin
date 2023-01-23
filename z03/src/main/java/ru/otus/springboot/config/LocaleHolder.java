@@ -1,29 +1,35 @@
 package ru.otus.springboot.config;
 
 import org.springframework.stereotype.Component;
+
 import java.util.Locale;
 
 @Component
 public class LocaleHolder {
+    private final PropertyConfig propertyConfig;
     private String localeName;
     private Locale locale;
 
     public LocaleHolder( PropertyConfig propertyConfig ) {
-        try {
-            this.localeName = propertyConfig.getProperty( "locale-name" );
-            this.locale = new Locale( localeName );
-        }
-        catch( IllegalArgumentException e ) {
-            // Поле locale не инициализировано, однако данное обстоятельство не препятствует корректному выполнению программы
-            // Такое происходит, когда в качестве аргумента в метод getProperty() передается строка, не совпадающая ни c одним из названий свойств в файле application.yml
-        }
+        this.propertyConfig = propertyConfig;
+    }
+
+    private void setLocale() throws IllegalArgumentException {
+        this.localeName = propertyConfig.getProperty( "locale-name" );
+        this.locale = new Locale( localeName );
     }
 
     public String getLocaleName() {
+        if( localeName == null ) {
+            setLocale();
+        }
         return localeName;
     }
 
     public Locale getLocale() {
+        if( locale == null ) {
+            setLocale();
+        }
         return locale;
     }
 

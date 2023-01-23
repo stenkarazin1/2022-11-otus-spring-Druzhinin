@@ -3,8 +3,10 @@ package ru.otus.springboot.service;
 import ru.otus.springboot.domain.Variant;
 import ru.otus.springboot.domain.TestItem;
 import ru.otus.springboot.domain.AnsweredTestItem;
+import ru.otus.springboot.exceptions.NoCinemaException;
 
 import org.springframework.stereotype.Service;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,7 +20,7 @@ public class AnswersServiceImpl implements AnswersService {
         this.messages = messages;
     }
 
-    public List< AnsweredTestItem > inputAnswers( List< TestItem > testItemList ) {
+    public List< AnsweredTestItem > inputAnswers( List< TestItem > testItemList ) throws NoCinemaException {
         int testItemListSize = testItemList.size();
         // Список вопросов, на которые ответили
         List< AnsweredTestItem > answeredTestItemList = new LinkedList<AnsweredTestItem>();
@@ -42,7 +44,7 @@ public class AnswersServiceImpl implements AnswersService {
         return answeredTestItemList;
     }
 
-    public void printResults( List< AnsweredTestItem > answeredTestItemList ) {
+    public void printResults( List< AnsweredTestItem > answeredTestItemList ) throws NoCinemaException {
         int answeredTestItemListSize = answeredTestItemList.size();
         int rightAnsweredTestItemCount = 0;
         for (AnsweredTestItem answeredTestItem : answeredTestItemList) {
@@ -57,7 +59,7 @@ public class AnswersServiceImpl implements AnswersService {
         ioService.outputString(messages.getMessage("result") + rightAnsweredTestItemCount + " / " + answeredTestItemListSize);
     }
 
-    public void printResultsWidely( List< AnsweredTestItem > answeredTestItemList ) {
+    public void printResultsWidely( List< AnsweredTestItem > answeredTestItemList ) throws NoCinemaException {
         int answeredTestItemListSize = answeredTestItemList.size();
         for( int i = 0; i < answeredTestItemListSize; i++ ) {
             AnsweredTestItem answeredTestItem = answeredTestItemList.get( i );
