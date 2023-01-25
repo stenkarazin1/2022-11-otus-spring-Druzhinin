@@ -3,19 +3,18 @@ package ru.otus.springboot.service;
 import ru.otus.springboot.config.LocaleHolder;
 import ru.otus.springboot.exceptions.NoCinemaException;
 
-import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import java.util.Locale;
 
 @Service
 public class MessageSourceWrapper {
-    private final ResourceBundleMessageSource messageSource;
+    private final MessageSource messageSource;
     private final LocaleHolder localeHolder;
 
-    public MessageSourceWrapper( LocaleHolder localeHolder ) {
-        this.messageSource = new ResourceBundleMessageSource();
-        this.messageSource.setBasenames( "messages" );
+    public MessageSourceWrapper( MessageSource messageSource, LocaleHolder localeHolder ) {
+        this.messageSource = messageSource;
         this.localeHolder = localeHolder;
     }
 
