@@ -15,11 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class TestBoxDaoSimple implements TestBoxDao {
+public class TestBoxDaoLocalizedCsv implements TestBoxDao {
     private final PropertyConfig propertyConfig;
     private final LocaleHolder localeHolder;
 
-    public TestBoxDaoSimple( PropertyConfig propertyConfig, LocaleHolder localeHolder ) {
+    public TestBoxDaoLocalizedCsv( PropertyConfig propertyConfig, LocaleHolder localeHolder ) {
         this.propertyConfig = propertyConfig;
         this.localeHolder = localeHolder;
     }
