@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface TestBoxDao {
 
-    List<TestItem> getTestItemList() throws IOException, NullPointerException, IllegalArgumentException;
+    List<TestItem> getTestItemList() throws IOException, NullPointerException;
 
 }

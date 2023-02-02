@@ -1,21 +1,20 @@
 package ru.otus.springboot.config;
 
 import org.springframework.stereotype.Component;
-
 import java.util.Locale;
 
 @Component
 public class LocaleHolderImpl implements LocaleHolder {
-    private final PropertyConfig propertyConfig;
+    private final ApplicationProperties ap;
     private String localeName;
     private Locale locale;
 
-    public LocaleHolderImpl( PropertyConfig propertyConfig ) {
-        this.propertyConfig = propertyConfig;
+    public LocaleHolderImpl( ApplicationProperties ap ) {
+        this.ap = ap;
     }
 
-    private void setLocale() throws IllegalArgumentException {
-        this.localeName = propertyConfig.getProperty( "locale-name" );
+    private void setLocale() {
+        this.localeName = ap.getLocaleName();
         this.locale = new Locale( localeName );
     }
 
@@ -32,6 +31,5 @@ public class LocaleHolderImpl implements LocaleHolder {
         }
         return locale;
     }
-
 
 }

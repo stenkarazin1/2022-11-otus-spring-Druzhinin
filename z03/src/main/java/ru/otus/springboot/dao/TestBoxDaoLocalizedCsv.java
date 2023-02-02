@@ -1,12 +1,11 @@
 package ru.otus.springboot.dao;
 
-import ru.otus.springboot.config.PropertyConfig;
+import ru.otus.springboot.config.FileNameProvider;
 import ru.otus.springboot.config.LocaleHolder;
 import ru.otus.springboot.domain.TestItem;
 import ru.otus.springboot.domain.Variant;
 
 import org.springframework.stereotype.Component;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,16 +15,16 @@ import java.util.List;
 
 @Component
 public class TestBoxDaoLocalizedCsv implements TestBoxDao {
-    private final PropertyConfig propertyConfig;
+    private final FileNameProvider fileNameProvider;
     private final LocaleHolder localeHolder;
 
-    public TestBoxDaoLocalizedCsv( PropertyConfig propertyConfig, LocaleHolder localeHolder ) {
-        this.propertyConfig = propertyConfig;
+    public TestBoxDaoLocalizedCsv( FileNameProvider fileNameProvider, LocaleHolder localeHolder ) {
         this.localeHolder = localeHolder;
+        this.fileNameProvider = fileNameProvider;
     }
 
-    public List< TestItem > getTestItemList() throws IOException, NullPointerException, IllegalArgumentException {
-        String fileName = propertyConfig.getProperty("config-file");
+    public List< TestItem > getTestItemList() throws IOException, NullPointerException {
+        String fileName = fileNameProvider.getFileName();
         String localeName = localeHolder.getLocaleName();
 
         List< TestItem > testItemList = new ArrayList<>();
