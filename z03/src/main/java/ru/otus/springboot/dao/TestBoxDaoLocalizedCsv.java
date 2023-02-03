@@ -2,6 +2,7 @@ package ru.otus.springboot.dao;
 
 import ru.otus.springboot.config.FileNameProvider;
 import ru.otus.springboot.config.LocaleHolder;
+import ru.otus.springboot.exceptions.NoCinemaException;
 import ru.otus.springboot.domain.TestItem;
 import ru.otus.springboot.domain.Variant;
 
@@ -23,7 +24,7 @@ public class TestBoxDaoLocalizedCsv implements TestBoxDao {
         this.fileNameProvider = fileNameProvider;
     }
 
-    public List< TestItem > getTestItemList() throws IOException, NullPointerException {
+    public List< TestItem > getTestItemList() throws NoCinemaException {
         String fileName = fileNameProvider.getFileName();
         String localeName = localeHolder.getLocaleName();
 
@@ -77,6 +78,12 @@ public class TestBoxDaoLocalizedCsv implements TestBoxDao {
                 testItemList.add( testItem );
             }
             return testItemList;
+        }
+        catch ( IOException e ) {
+            throw new NoCinemaException( "Incorrect file input" );
+        }
+        catch ( NullPointerException e ) {
+            throw new NoCinemaException( "File with questions not found" );
         }
     }
 

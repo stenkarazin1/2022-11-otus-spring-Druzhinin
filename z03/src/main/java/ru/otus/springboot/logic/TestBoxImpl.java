@@ -7,14 +7,11 @@ import ru.otus.springboot.domain.TestItem;
 
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
 @Component
 public class TestBoxImpl implements TestBox {
-    // Класс TestBox реализует промежуточный слой - слой бизнес-логики
-    // Его задача заключается в формировании списка вопросов заданного объема, комбинируя и перемешивая вопросы из разных источников
     private final PropertyConfig propertyConfig;
     private final TestBoxDao testBoxDao;
 
@@ -32,19 +29,7 @@ public class TestBoxImpl implements TestBox {
             throw new NoCinemaException( "No such property" );
         }
 
-        final List< TestItem > testItemList;
-        try {
-            testItemList = testBoxDao.getTestItemList();
-        }
-        catch ( IOException e ) {
-            throw new NoCinemaException( "Incorrect file input" );
-        }
-        catch ( NullPointerException e ) {
-            throw new NoCinemaException( "File with questions not found" );
-        }
-        catch( IllegalArgumentException e ) {
-            throw new NoCinemaException( "No such property" );
-        }
+        final List< TestItem > testItemList = testBoxDao.getTestItemList();
 
         final int testItemListSize = testItemList.size();
         if( testItemListSize < requiredTestItemListSize ) {
