@@ -38,7 +38,7 @@ public class TestBoxImpl implements TestBox {
 
         Collections.shuffle( testItemList );
         for( int i = requiredTestItemListSize; i < testItemListSize; i++ ) {
-            testItemList.remove( i );
+            testItemList.remove( testItemList.size() - 1 );
         }
         return testItemList;
     }
