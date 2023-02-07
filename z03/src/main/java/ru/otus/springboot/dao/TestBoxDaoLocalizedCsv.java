@@ -11,8 +11,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class TestBoxDaoLocalizedCsv implements TestBoxDao {
@@ -22,6 +22,27 @@ public class TestBoxDaoLocalizedCsv implements TestBoxDao {
     public TestBoxDaoLocalizedCsv( FileNameProvider fileNameProvider, LocaleHolder localeHolder ) {
         this.localeHolder = localeHolder;
         this.fileNameProvider = fileNameProvider;
+    }
+
+    private boolean isRightFormat( String str ) {
+        return !str.isEmpty() && str.contains(",,") && !str.contains(",,,");
+    }
+
+    private boolean isRightFormat2( LinkedList< String > list ) {
+        return list.size() > 4 && !list.getFirst().isEmpty() && !list.get( 1 ).isEmpty() && !list.get( list.size() - 1 ).isEmpty();
+    }
+
+
+    private Variant getVariant( Iterator< String > iterator ) {
+        boolean isRight = false;
+        String str = iterator.next();
+        iterator.remove();
+        if ( str.isEmpty() ) {
+            isRight = true;
+            str = iterator.next();
+            iterator.remove();
+        }
+        return new Variant( str, isRight );
     }
 
     public List< TestItem > getTestItemList() throws NoCinemaException {
@@ -35,45 +56,36 @@ public class TestBoxDaoLocalizedCsv implements TestBoxDao {
 
         try ( BufferedReader reader = new BufferedReader( new InputStreamReader( inputStream ) ) ) {
             String line;
-            outer:
             while ( (line = reader.readLine()) != null ) {
                 // Вопросы хранятся в файле формата .csv, т.е. данные отделены запятыми
                 // Одна строка соответствует одному вопросу на одном языке
                 // В каждой строке сначала записан код языка (en, ru и т.д.), затем вопрос, а затем варианты ответа, один из которых правильный
                 // Например: ru,Вопрос,Вариант1,,Вариант2,Вариант3
                 // Правильный вариант предваряется двумя запятыми, т.е. в примере выше правильным является Вариант2
-                if( line.isEmpty() || !line.contains(",,") ) {
+                if( !isRightFormat( line ) ) {
                     // Bad format
                     continue;
                 }
-                String[] str = line.split( "," );
-                if( str.length < 4 || str[0].isEmpty() || str[1].isEmpty() ) {
+
+                LinkedList< String > snippetList = Arrays.stream( line.split( "," ) )
+                        .collect( Collectors.toCollection( LinkedList::new ) );
+                if( !isRightFormat2( snippetList ) ) {
                     // Bad format
                     continue;
                 }
-                if( !localeName.equals( str[0] ) ) {
+
+                if( !localeName.equals( snippetList.removeFirst() ) ) {
                     // Another language
                     continue;
                 }
+                String question = snippetList.removeFirst();
+
                 List< Variant > variantList = new ArrayList<>();
-                boolean isRight = false;
-                String question = str[1];
-                for( int i = 2; i < str.length; i++ ) {
-                    if( str[i].isEmpty() ) {
-                        if( !isRight ) {
-                            isRight = true;
-                        }
-                        else {
-                            // Bad format
-                            continue outer;
-                        }
-                    }
-                    else {
-                        Variant variant = new Variant( str[i], isRight );
-                        variantList.add( variant );
-                        isRight = false;
-                    }
+                Iterator< String > iterator = snippetList.iterator();
+                while( iterator.hasNext() ) {
+                    variantList.add( getVariant( iterator ) );
                 }
+
                 TestItem testItem = new TestItem( question, variantList );
                 testItemList.add( testItem );
             }
