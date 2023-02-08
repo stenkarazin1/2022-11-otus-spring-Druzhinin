@@ -11,7 +11,6 @@ public class FileNameProviderImpl implements FileNameProvider {
     }
 
     public String getFileName() {
-        String fileName = ap.getConfigFile();
-        return fileName;
+        return ap.getConfigFile();
     }
 }

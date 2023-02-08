@@ -1,6 +1,6 @@
 package ru.otus.springboot.logic;
 
-import ru.otus.springboot.config.PropertyConfig;
+import ru.otus.springboot.config.RequiredTestItemListSizeProvider;
 import ru.otus.springboot.exceptions.NoCinemaException;
 import ru.otus.springboot.dao.TestBoxDao;
 import ru.otus.springboot.domain.TestItem;
@@ -12,25 +12,24 @@ import java.util.List;
 
 @Component
 public class TestBoxImpl implements TestBox {
-    private final PropertyConfig propertyConfig;
+    private final RequiredTestItemListSizeProvider requiredTestItemListSizeProvider;
     private final TestBoxDao testBoxDao;
 
-    public TestBoxImpl( PropertyConfig propertyConfig, TestBoxDao dao ) {
-        this.propertyConfig = propertyConfig;
+    public TestBoxImpl( RequiredTestItemListSizeProvider requiredTestItemListSizeProvider, TestBoxDao dao ) {
+        this.requiredTestItemListSizeProvider = requiredTestItemListSizeProvider;
         this.testBoxDao = dao;
     }
 
     public List< TestItem > getTestItemList() throws NoCinemaException {
-        Integer requiredTestItemListSize;
+        final int requiredTestItemListSize;
         try {
-            requiredTestItemListSize = Integer.valueOf( propertyConfig.getProperty( "num-items" ) );
+            requiredTestItemListSize = requiredTestItemListSizeProvider.getRequiredTestItemListSize();
         }
-        catch( IllegalArgumentException e ) {
-            throw new NoCinemaException( "No such property" );
+        catch ( NumberFormatException e ) {
+            throw new NoCinemaException( "Invalid property value" );
         }
 
         final List< TestItem > testItemList = testBoxDao.getTestItemList();
-
         final int testItemListSize = testItemList.size();
         if( testItemListSize < requiredTestItemListSize ) {
             throw new NoCinemaException( "Too less test items" );
