@@ -18,24 +18,10 @@ public class MessageSourceWrapper {
         this.localeHolder = localeHolder;
     }
 
-    public String getMessage( String messageCode ) throws NoCinemaException {
-        try {
-            return messageSource.getMessage( messageCode, null, localeHolder.getLocale() );
-        }
-        catch( IllegalArgumentException e ) {
-            throw new NoCinemaException( "No such property" );
-        }
+    public String getMessage( String messageCode ) {
+        // Если в ресурсах не предусмотрена локализация для заданной в свойствах локали, то для вывода сообщений будет использована дефолтная локаль
+        return messageSource.getMessage( messageCode, null, localeHolder.getLocale() );
     }
 
-    public String getEmergencyMessage( String messageCode ) {
-        // Причиной исключения может быть локаль
-        // Поэтому нужно разомкнуть круг
-        try {
-            return messageSource.getMessage( messageCode, null, localeHolder.getLocale() );
-        }
-        catch( IllegalArgumentException e ) {
-            return messageSource.getMessage( messageCode, null, Locale.getDefault() );
-        }
-    }
 
 }
