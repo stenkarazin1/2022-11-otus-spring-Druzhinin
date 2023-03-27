@@ -9,7 +9,7 @@ public class UserServiceImpl implements UserService {
     private final IOService ioService;
     private final MessageSourceWrapper messages;
 
-    public UserServiceImpl( IOService ioService, MessageSourceWrapper messages ) {
+    UserServiceImpl( IOService ioService, MessageSourceWrapper messages ) {
         this.ioService = ioService;
         this.messages = messages;
     }
