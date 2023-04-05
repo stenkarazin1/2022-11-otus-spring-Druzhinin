@@ -1,0 +1,13 @@
+application:
+  config-file: "/test3.csv"
+  num-items: 5
+  locale-name: "ru"
+spring:
+  messages:
+    basename: "messages,config.i18n.messages"
+    fallback-to-system-locale: false
+  shell:
+    interactive:
+      enabled: false
+  main:
+    allow-circular-references: true
