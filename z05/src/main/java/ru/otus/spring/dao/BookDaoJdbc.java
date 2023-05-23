@@ -65,17 +65,19 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public Book getByAuthorAndTitle( BookUniqueData bookUniqueData ) {
+    public Book getByBookUniqueData( BookUniqueData bookUniqueData ) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue( "author_name", bookUniqueData.getAuthor_name() );
         params.addValue( "title", bookUniqueData.getTitle() );
+        params.addValue( "year_publication", bookUniqueData.getYear_publication() );
 
         return namedParameterJdbcOperations.queryForObject( "SELECT title, year_publication, available_quantity, author_name, genre_name " +
                         "FROM book " +
                         "     JOIN author USING (author_id) " +
                         "     JOIN genre USING (genre_id) " +
                         "WHERE author_name = :author_name " +
-                        "      AND title = :title",
+                        "      AND title = :title" +
+                        "      AND year_publication = :year_publication",
                 params, new BookMapper() );
     }
 
@@ -98,10 +100,11 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public void deleteByAuthorAndTitle( BookUniqueData bookUniqueData ) {
+    public void deleteByBookUniqueData( BookUniqueData bookUniqueData ) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue( "author_name", bookUniqueData.getAuthor_name() );
         params.addValue( "title", bookUniqueData.getTitle() );
+        params.addValue( "year_publication", bookUniqueData.getYear_publication() );
 
         namedParameterJdbcOperations.update( "DELETE FROM book " +
                         "WHERE book_id IN " +
@@ -110,7 +113,8 @@ public class BookDaoJdbc implements BookDao {
                         "     JOIN author USING (author_id) " +
                         "     JOIN genre USING (genre_id) " +
                         "WHERE author_name = :author_name " +
-                        "      AND title = :title)",
+                        "      AND title = :title" +
+                        "      AND year_publication = :year_publication)",
                 params );
     }
 

@@ -13,12 +13,12 @@ public interface BookDao {
 
     Book getById( long id );
 
-    Book getByAuthorAndTitle( BookUniqueData bookUniqueData );
+    Book getByBookUniqueData( BookUniqueData bookUniqueData );
 
     List< Book > getAll();
 
     void deleteById( long id );
 
-    void deleteByAuthorAndTitle( BookUniqueData bookUniqueData );
+    void deleteByBookUniqueData( BookUniqueData bookUniqueData );
 
 }

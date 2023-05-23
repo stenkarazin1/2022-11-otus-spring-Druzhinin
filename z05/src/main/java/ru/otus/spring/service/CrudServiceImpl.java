@@ -27,7 +27,7 @@ public class CrudServiceImpl implements CrudService {
     @Override
     public void browseBookInfo() {
         BookUniqueData bookUniqueData = ioBookService.inputBookUniqueData();
-        Book result = bookDao.getByAuthorAndTitle( bookUniqueData );
+        Book result = bookDao.getByBookUniqueData( bookUniqueData );
 
         ioService.outputString( "\n-----------------------------------------------------------------" );
         ioBookService.printBookInfo( result );
@@ -49,6 +49,6 @@ public class CrudServiceImpl implements CrudService {
     @Override
     public void removeBook() {
         BookUniqueData bookUniqueData = ioBookService.inputBookUniqueData();
-        bookDao.deleteByAuthorAndTitle( bookUniqueData );
+        bookDao.deleteByBookUniqueData( bookUniqueData );
     }
 }
