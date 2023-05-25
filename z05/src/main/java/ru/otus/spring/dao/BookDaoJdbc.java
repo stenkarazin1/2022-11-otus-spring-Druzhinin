@@ -36,8 +36,8 @@ public class BookDaoJdbc implements BookDao {
 
     @Override
     public void insert( Book book ) {
-        long authorId = authorDao.insert( new Author( book.getAuthor_name() ) );
-        long genreId = genreDao.insert( new Genre( book.getGenre_name() ) );
+        long authorId = authorDao.getAuthorId( new Author( book.getAuthor_name() ) );
+        long genreId = genreDao.getGenreId( new Genre( book.getGenre_name() ) );
 
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue( "title", book.getTitle() );

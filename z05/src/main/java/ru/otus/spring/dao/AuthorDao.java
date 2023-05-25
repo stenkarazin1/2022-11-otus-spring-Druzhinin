@@ -4,6 +4,6 @@ import ru.otus.spring.domain.Author;
 
 public interface AuthorDao {
 
-    int insert( Author author );
+    long getAuthorId( Author author );
 
 }
