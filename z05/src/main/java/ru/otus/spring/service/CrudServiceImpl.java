@@ -47,6 +47,17 @@ public class CrudServiceImpl implements CrudService {
     }
 
     @Override
+    public void putBook() {
+        BookUniqueData bookUniqueData = ioBookService.inputBookUniqueData();
+        bookDao.updateAvailableQuantityByBookUniqueData( bookUniqueData, -1 );
+    }
+    @Override
+    public void returnBook() {
+        BookUniqueData bookUniqueData = ioBookService.inputBookUniqueData();
+        bookDao.updateAvailableQuantityByBookUniqueData( bookUniqueData, 1 );
+    }
+
+    @Override
     public void removeBook() {
         BookUniqueData bookUniqueData = ioBookService.inputBookUniqueData();
         bookDao.deleteByBookUniqueData( bookUniqueData );

@@ -8,6 +8,11 @@ public interface CrudService {
 
     void browseAllBookInfo();
 
+    // void changeBookInfo();  // Этот метод нужен для полноты картины. Но он сложный и запутанный, а потому отвлекает от сути
+
+    void putBook();
+    void returnBook();
+
     void removeBook();
 
 }

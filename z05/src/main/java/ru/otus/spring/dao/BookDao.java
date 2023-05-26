@@ -17,6 +17,8 @@ public interface BookDao {
 
     List< Book > getAll();
 
+    void updateAvailableQuantityByBookUniqueData( BookUniqueData bookUniqueData, int inc );
+
     void deleteById( long id );
 
     void deleteByBookUniqueData( BookUniqueData bookUniqueData );

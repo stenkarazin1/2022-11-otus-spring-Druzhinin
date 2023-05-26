@@ -91,6 +91,26 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
+    public void updateAvailableQuantityByBookUniqueData( BookUniqueData bookUniqueData, int increment ) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue( "author_name", bookUniqueData.getAuthor_name() );
+        params.addValue( "title", bookUniqueData.getTitle() );
+        params.addValue( "year_publication", bookUniqueData.getYear_publication() );
+        params.addValue( "increment", increment );
+
+        namedParameterJdbcOperations.update( "UPDATE book " +
+                        "SET available_quantity = available_quantity + :increment " +
+                        "WHERE book_id IN " +
+                        "( SELECT book_id " +
+                        "  FROM book " +
+                        "       JOIN author USING (author_id) " +
+                        "  WHERE author_name = :author_name " +
+                        "        AND title = :title " +
+                        "        AND year_publication = :year_publication )",
+                params );
+    }
+
+    @Override
     public void deleteById( long id ) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue( "id", id );
@@ -108,13 +128,12 @@ public class BookDaoJdbc implements BookDao {
 
         namedParameterJdbcOperations.update( "DELETE FROM book " +
                         "WHERE book_id IN " +
-                        "(SELECT book_id " +
-                        "FROM book " +
-                        "     JOIN author USING (author_id) " +
-                        "     JOIN genre USING (genre_id) " +
-                        "WHERE author_name = :author_name " +
-                        "      AND title = :title" +
-                        "      AND year_publication = :year_publication)",
+                        "( SELECT book_id " +
+                        "  FROM book " +
+                        "       JOIN author USING (author_id) " +
+                        "  WHERE author_name = :author_name " +
+                        "        AND title = :title " +
+                        "        AND year_publication = :year_publication )",
                 params );
     }
 
