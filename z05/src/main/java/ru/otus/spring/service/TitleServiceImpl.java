@@ -18,6 +18,14 @@ public class TitleServiceImpl implements TitleService {
     }
 
     @Override
+    public String inputTitleWithDefaultValue( String defaultValue ) {
+        printTitle( defaultValue );
+        String title = ioService.readStringWithPromptUncheckedInput( "Введите необходимое название книги (если нужно оставить текущее, то просто нажмите Enter):" );
+
+        return title != null ? title : defaultValue;
+    }
+
+    @Override
     public void printTitle( String title ) {
         ioService.outputString( "Название:\t\t" + title );
     }

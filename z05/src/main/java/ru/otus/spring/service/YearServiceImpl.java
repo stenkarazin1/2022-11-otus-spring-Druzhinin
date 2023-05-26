@@ -18,6 +18,14 @@ public class YearServiceImpl implements YearService {
     }
 
     @Override
+    public int inputYearWithDefaultValue( int defaultValue ) {
+        printYear( defaultValue );
+        Integer year = ioService.readIntWithPromptUncheckedInput( "Введите необходимый год издания книги (если нужно оставить текущий, то просто нажмите Enter):" );
+
+        return year != null ? year : defaultValue;
+    }
+
+    @Override
     public void printYear( int year ) {
         ioService.outputString( "Год издания:\t" + year );
     }

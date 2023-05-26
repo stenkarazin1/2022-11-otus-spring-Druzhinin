@@ -1,11 +1,11 @@
 package ru.otus.spring.service;
 
-// import ru.otus.spring.exceptions.NoCinemaException;
-
 public interface GenreService {
 
-    String inputGenreName(); // throws NoCinemaException;
+    String inputGenreName();
 
-    void printGenreName( String genreName ); // throws NoCinemaException;
+    String inputGenreNameWithDefaultValue( String defaultValue );
+
+    void printGenreName( String genreName );
 
 }

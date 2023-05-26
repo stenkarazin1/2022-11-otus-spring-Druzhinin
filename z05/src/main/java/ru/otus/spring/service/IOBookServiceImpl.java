@@ -26,7 +26,8 @@ public class IOBookServiceImpl implements IOBookService {
         String authorName = authorService.inputAuthorName();
         String title = titleService.inputTitle();
         int year = yearService.inputYear();
-        return new BookUniqueData(title, authorName, year );
+
+        return new BookUniqueData( title, authorName, year );
     }
 
     @Override
@@ -34,7 +35,19 @@ public class IOBookServiceImpl implements IOBookService {
         BookUniqueData bookUniqueData = inputBookUniqueData();
         String genreName = genreService.inputGenreName();
         int quantity = quantityService.inputQuantity();
+
         return new Book( bookUniqueData.getTitle(), bookUniqueData.getYear_publication(), quantity, bookUniqueData.getAuthor_name(), genreName );
+    }
+
+    @Override
+    public Book inputBookInfoWithDefaultBookInfo( Book defaultBookInfo ) {
+        // В ioService пришлось добавить методы, возвращающие null при вводе пустого значения
+        String authorName = authorService.inputAuthorNameWithDefaultValue( defaultBookInfo.getAuthor_name() );
+        String title = titleService.inputTitleWithDefaultValue( defaultBookInfo.getTitle() );
+        int year = yearService.inputYearWithDefaultValue( defaultBookInfo.getYear_publication() );
+        String genreName = genreService.inputGenreNameWithDefaultValue( defaultBookInfo.getGenre_name() );
+
+        return new Book( title, year, defaultBookInfo.getAvailable_quantity(), authorName, genreName );
     }
 
     @Override

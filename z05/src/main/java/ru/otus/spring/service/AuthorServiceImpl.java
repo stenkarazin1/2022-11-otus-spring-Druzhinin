@@ -18,6 +18,14 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    public String inputAuthorNameWithDefaultValue( String defaultValue ) {
+        printAuthorName( defaultValue );
+        String authorName = ioService.readStringWithPromptUncheckedInput( "Введите необходимые фамилию и инициалы автора книги (если нужно оставить текущие, то просто нажмите Enter):" );
+
+        return authorName != null ? authorName : defaultValue;
+    }
+
+    @Override
     public void printAuthorName( String authorName ) {
         ioService.outputString( "Автор:\t\t\t" + authorName );
     }

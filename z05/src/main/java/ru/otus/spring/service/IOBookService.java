@@ -9,6 +9,8 @@ public interface IOBookService {
 
     Book inputBookInfo();
 
+    Book inputBookInfoWithDefaultBookInfo( Book defaultBookInfo );
+
     void printBookInfo( Book book );
 
 }

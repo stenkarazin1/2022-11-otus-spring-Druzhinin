@@ -18,6 +18,14 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
+    public String inputGenreNameWithDefaultValue( String defaultValue ) {
+        printGenreName( defaultValue );
+        String genreName = ioService.readStringWithPromptUncheckedInput( "Введите необходимый жанр книги (если нужно оставить текущий, то просто нажмите Enter):" );
+
+        return genreName != null ? genreName : defaultValue;
+    }
+
+    @Override
     public void printGenreName( String genreName ) {
         ioService.outputString( "Жанр:\t\t\t" + genreName );
     }
