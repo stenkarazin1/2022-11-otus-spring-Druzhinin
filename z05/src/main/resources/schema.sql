@@ -22,7 +22,7 @@ CREATE TABLE book (
     genre_id SMALLINT NOT NULL,
     author_id SMALLINT NOT NULL,
     year_publication SMALLINT NOT NULL,
-    available_quantity SMALLINT,
+    available_quantity SMALLINT CHECK (available_quantity >= 0),
     FOREIGN KEY (genre_id) REFERENCES genre (genre_id),
     FOREIGN KEY (author_id) REFERENCES author (author_id) ON DELETE CASCADE,
     UNIQUE (title, author_id, year_publication)

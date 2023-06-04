@@ -1,5 +1,6 @@
 package ru.otus.spring.service;
 
+import ru.otus.spring.exceptions.*;
 import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.BookUniqueData;
 import ru.otus.spring.dao.BookDao;
@@ -21,45 +22,106 @@ public class CrudServiceImpl implements CrudService {
 
     @Override
     public void addBook() {
-        bookDao.insert( ioBookService.inputBookInfo() );
+        try {
+            bookDao.insert( ioBookService.inputBookInfo() );
+            ioService.outputString( "Книга добавлена" );
+        }
+        catch ( BookAlreadyFoundException e ) {
+            ioService.outputString( "Невозможно добавить книгу:\n  Книга с введенными данными уже имеется в библиотеке" );
+        }
+        catch ( NegativeAvailableQuantityException e ) {
+            ioService.outputString( "Невозможно добавить книгу:\n  Количество экземпляров отрицательно" );
+        }
+        catch ( LibraryException e ) {
+            ioService.outputString( "Невозможно добавить книгу:\n  Неизвестная ошибка" );
+        }
     }
 
     @Override
     public void browseBookInfo() {
         BookUniqueData bookUniqueData = ioBookService.inputBookUniqueData();
-        Book result = bookDao.getByBookUniqueData( bookUniqueData );
+        try {
+            Book result = bookDao.getByBookUniqueData(bookUniqueData);
 
-        ioService.outputString( "\n-----------------------------------------------------------------" );
-        ioBookService.printBookInfo( result );
-        ioService.outputString( "-----------------------------------------------------------------\n" );
+            ioService.outputString("\n-----------------------------------------------------------------");
+            ioBookService.printBookInfo(result);
+            ioService.outputString("-----------------------------------------------------------------\n");
+        }
+        catch ( BookNotFoundException e ) {
+            ioService.outputString( "Невозможно просмотреть информацию о книге:\n  Книга не найдена" );
+        }
+        catch ( NegativeAvailableQuantityException e ) {
+            ioService.outputString( "Невозможно просмотреть информацию о книге:\n  Количество экземпляров отрицательно" );
+        }
+        catch ( LibraryException e ) {
+            ioService.outputString( "Невозможно просмотреть информацию о книге:\n  Неизвестная ошибка" );
+        }
     }
 
     @Override
     public void browseAllBookInfo() {
-        List< Book > result = bookDao.getAll();
+        try {
+            List< Book > result = bookDao.getAll();
 
-        ioService.outputString( "\n-----------------------------------------------------------------" );
-        for ( Book book : result ) {
-            ioBookService.printBookInfo( book );
-            ioService.outputString( "-----------------------------------------------------------------" );
+            ioService.outputString( "\n-----------------------------------------------------------------" );
+            for ( Book book : result ) {
+                ioBookService.printBookInfo( book );
+                ioService.outputString( "-----------------------------------------------------------------" );
+            }
+            ioService.outputString( "\n" );
         }
-        ioService.outputString( "\n" );
+        catch ( LibraryException e ) {
+            ioService.outputString( "Невозможно просмотреть информацию обо всех книгах:\n  Неизвестная ошибка" );
+        }
     }
 
     @Override
     public void putBook() {
         BookUniqueData bookUniqueData = ioBookService.inputBookUniqueData();
-        bookDao.updateAvailableQuantityByBookUniqueData( bookUniqueData, -1 );
+        try {
+            bookDao.updateAvailableQuantityByBookUniqueData(bookUniqueData, -1);
+            ioService.outputString( "Книга выдана" );
+        }
+        catch ( BookNotFoundException e ) {
+            ioService.outputString( "Невозможно выдать книгу:\n  Книга не найдена" );
+        }
+        catch ( NegativeAvailableQuantityException e ) {
+            ioService.outputString( "Невозможно выдать книгу:\n  В наличии нет ни одного экземпляра книги" );
+        }
+        catch ( LibraryException e ) {
+            ioService.outputString("Невозможно выдать книгу:\n  Неизвестная ошибка");
+        }
     }
     @Override
     public void returnBook() {
         BookUniqueData bookUniqueData = ioBookService.inputBookUniqueData();
-        bookDao.updateAvailableQuantityByBookUniqueData( bookUniqueData, 1 );
+        try {
+            bookDao.updateAvailableQuantityByBookUniqueData( bookUniqueData, 1 );
+            ioService.outputString( "Книга получена" );
+        }
+        catch ( BookNotFoundException e ) {
+            ioService.outputString( "Невозможно вернуть книгу:\n  Книга не найдена" );
+        }
+        catch ( LibraryException e ) {
+            ioService.outputString("Невозможно вернуть книгу:\n  Неизвестная ошибка");
+        }
     }
 
     @Override
     public void removeBook() {
         BookUniqueData bookUniqueData = ioBookService.inputBookUniqueData();
-        bookDao.deleteByBookUniqueData( bookUniqueData );
+        try {
+            bookDao.deleteByBookUniqueData( bookUniqueData );
+            ioService.outputString( "Книга удалена" );
+        }
+        catch ( BookAlreadyFoundException e ) {
+            ioService.outputString( "Невозможно удалить книгу:\n  Книга не найдена" );
+        }
+        catch ( LinkFromOutsideOnBookException e ) {
+            ioService.outputString( "Невозможно удалить книгу:\n  На книгу есть ссылка извне" );
+        }
+        catch ( LibraryException e ) {
+            ioService.outputString( "Невозможно удалить книгу:\n  Неизвестная ошибка" );
+        }
     }
 }

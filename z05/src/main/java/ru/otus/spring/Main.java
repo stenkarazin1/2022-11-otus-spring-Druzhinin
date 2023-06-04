@@ -16,15 +16,13 @@ public class Main {
 
         CrudService crudService = context.getBean( CrudService.class );
 
-        crudService.addBook();
         crudService.browseAllBookInfo();
-
-        crudService.removeBook();
-        crudService.browseAllBookInfo();
-
-        crudService.browseBookInfo();
-
+        //crudService.changeBookInfo();
+        crudService.putBook();
+        crudService.returnBook();
         Console.main(args);
-
+        crudService.addBook();
+        crudService.removeBook();
+        crudService.browseBookInfo();
     }
 }
