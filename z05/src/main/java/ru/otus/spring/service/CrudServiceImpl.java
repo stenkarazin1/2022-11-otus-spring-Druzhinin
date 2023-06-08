@@ -26,6 +26,19 @@ public class CrudServiceImpl implements CrudService {
             bookDao.insert( ioBookService.inputBookInfo() );
             ioService.outputString( "Книга добавлена" );
         }
+        catch ( LinkedTableInformationNotFoundException e ) {
+            if ( e instanceof AuthorNotFoundException ) {
+                ioService.outputString( "Невозможно добавить книгу:\n  Автор не найден" );
+            }
+            else {
+                if ( e instanceof GenreNotFoundException ) {
+                    ioService.outputString("Невозможно добавить книгу:\n  Жанр не найден");
+                }
+                else {
+                    ioService.outputString( "Невозможно добавить книгу:\n  Что-то не найдено" );
+                }
+            }
+        }
         catch ( BookAlreadyFoundException e ) {
             ioService.outputString( "Невозможно добавить книгу:\n  Книга с введенными данными уже имеется в библиотеке" );
         }

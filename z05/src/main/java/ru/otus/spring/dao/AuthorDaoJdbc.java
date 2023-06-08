@@ -1,13 +1,12 @@
 package ru.otus.spring.dao;
 
+import ru.otus.spring.exceptions.*;
 import ru.otus.spring.domain.Author;
 
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 @Repository
 public class AuthorDaoJdbc implements AuthorDao {
@@ -19,7 +18,7 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public long getAuthorId( Author author ) {
+    public long getAuthorId( Author author ) throws AuthorNotFoundException {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue( "author_name", author.getAuthorName() );
 
@@ -29,17 +28,15 @@ public class AuthorDaoJdbc implements AuthorDao {
 
            Однако реализовывать взаимодействие с пользователем в консольном приложении неудобно. И еще не хочется излишне усложнять программу
         */
-        return namedParameterJdbcOperations.queryForObject( "SELECT author_id " +
-                                                                 "FROM author " +
-                                                                 "WHERE author_name = :author_name",
-                params, new AuthorMapper() );
-    }
-
-    private static class AuthorMapper implements RowMapper< Integer > {
-
-        @Override
-        public Integer mapRow( ResultSet resultSet, int i ) throws SQLException {
-            return resultSet.getInt( "author_id" );
+        try {
+            return namedParameterJdbcOperations.queryForObject("SELECT author_id " +
+                                                                    "FROM author " +
+                                                                    "WHERE author_name = :author_name",
+                    params, Integer.class );
+        }
+        catch ( DataAccessException e ) {
+            LinkedTableInformationNotFoundExceptionFactory factory = new LinkedTableInformationNotFoundExceptionFactory();
+            throw factory.getLinkedTableInformationNotFoundException( LinkedTableInformationNotFoundExceptionTypes.AUTHOR );
         }
     }
 
